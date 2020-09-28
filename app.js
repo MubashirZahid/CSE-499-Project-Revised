@@ -273,6 +273,27 @@ app.post('/relationship/addS', function(req, res){
 });
 
 
+//Add Relationship Between Disease and Disease
+app.get('/addRD', function(req,res){
+    res.render('AddRD')
+});
+
+app.post('/relationship/addD', function(req, res){
+    var name1 = req.body.name1;
+    var name2 = req.body.name2;
+    
+    session
+        .run("match (d:Disease {name: $nameParam1}) , (s:Disease {name: $nameParam2}) merge(d)-[r:IS_A]->(s)", {nameParam1: name1, nameParam2: name2})
+        .then(function(result){
+            res.render('Success')
+            //session.close();
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+});
+
+
 // Delete Disease
 app.get('/deleteD', function(req,res){
     res.render('DeleteD')
